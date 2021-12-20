@@ -1,0 +1,78 @@
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Query {
+    users: [User!]! @paginate(defaultCount: 10)
+    user(id: ID @eq): User @find
+
+    posts: [Post!]! @paginate(defaultCount: 10)
+    post(id: ID @eq): Post @find
+
+    tags: [Tag!]! @paginate(defaultCount: 10)
+    tag(id: ID @eq): Tag @find
+
+    categories: [Category!]! @paginate(defaultCount: 10)
+    category(id: ID @eq): Category @find
+}
+
+type Mutation {
+    createUser(
+        name: String! @rules(apply: ["required"]),
+        email: String! @rules(apply: ["unique:users,email", "email:rfc,dns"]),
+        password: String! @hash
+    ): User! @create
+    updateUser(
+        id: Int!,
+        name: String! @rules(apply: ["required"]),
+        password: String! @hash
+    ): User @update
+    deleteUser(id: Int!): User @delete
+
+    createCategory(name: String!): Category @create
+    updateCategory(id: Int!, name: String!): Category @update
+    deleteCategory(id: Int!): Category @delete
+
+    createTag(name: String!): Tag! @create
+    updateTag(id: Int!, name: String!): Tag! @update
+    deleteTag(id: Int!): Tag @delete
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    body: String!
+    is_published: Boolean!
+    user: User! @belongsTo
+    category: Category @belongsTo
+    comments: [Comment] @hasMany
+    tags: [Tag] @belongsToMany
+}
+
+type Comment {
+    id: ID!,
+    user: User! @belongsTo
+    post: Post! @belongsTo
+}
+
+type Category {
+    id: ID!,
+    name: String!
+    posts: [Post] @hasMany
+}
+
+type Tag {
+    id: ID!
+    name: String!
+    posts: [Post] @belongsToMany
+}
