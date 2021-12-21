@@ -25,19 +25,19 @@ type Mutation {
         password: String! @hash
     ): User! @create
     updateUser(
-        id: Int!,
+        id: ID!,
         name: String! @rules(apply: ["required"]),
         password: String! @hash
     ): User @update
-    deleteUser(id: Int!): User @delete
+    deleteUser(id: ID!): User @delete
 
     createCategory(name: String!): Category @create
-    updateCategory(id: Int!, name: String!): Category @update
-    deleteCategory(id: Int!): Category @delete
+    updateCategory(id: ID!, name: String!): Category @update
+    deleteCategory(id: ID!): Category @delete
 
     createTag(name: String!): Tag! @create
-    updateTag(id: Int!, name: String!): Tag! @update
-    deleteTag(id: Int!): Tag @delete
+    updateTag(id: ID!, name: String!): Tag! @update
+    deleteTag(id: ID!): Tag @delete
 }
 
 type User {
