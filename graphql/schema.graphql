@@ -31,6 +31,8 @@ type Mutation {
     ): User @update
     deleteUser(id: ID!): User @delete
 
+    createPost(post: CreatePost @spread): Post @create
+
     createCategory(name: String!): Category @create
     updateCategory(id: ID!, name: String!): Category @update
     deleteCategory(id: ID!): Category @delete
@@ -38,6 +40,14 @@ type Mutation {
     createTag(name: String!): Tag! @create
     updateTag(id: ID!, name: String!): Tag! @update
     deleteTag(id: ID!): Tag @delete
+}
+
+input CreatePost {
+    title: String!
+    body: String!
+    is_published: Boolean!
+    user_id: Int!
+    category_id: Int!
 }
 
 type User {
