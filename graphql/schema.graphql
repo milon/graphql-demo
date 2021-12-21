@@ -56,6 +56,8 @@ type User {
     email: String!
     created_at: DateTime!
     updated_at: DateTime!
+    posts: [Post]! @hasMany
+    comments: [Comment]! @hasMany
 }
 
 type Post {
@@ -65,8 +67,8 @@ type Post {
     is_published: Boolean!
     user: User! @belongsTo
     category: Category @belongsTo
-    comments: [Comment] @hasMany
-    tags: [Tag] @belongsToMany
+    comments: [Comment]! @hasMany
+    tags: [Tag]! @belongsToMany
 }
 
 type Comment {
@@ -78,11 +80,11 @@ type Comment {
 type Category {
     id: ID!,
     name: String!
-    posts: [Post] @hasMany
+    posts: [Post]! @hasMany
 }
 
 type Tag {
     id: ID!
     name: String!
-    posts: [Post] @belongsToMany
+    posts: [Post]! @belongsToMany
 }
